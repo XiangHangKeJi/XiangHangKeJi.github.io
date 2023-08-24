@@ -131,7 +131,7 @@ class InfoData {
         const link = document.createElement("a");
         link.href = this.canvas.toDataURL();
         link.download = "info.png"; // 设置下载的文件名
-        link.innerText = "点击下载";
+        link.innerText = "下载图片";
         document.querySelector("#container").appendChild(link);
     }
     api2() {

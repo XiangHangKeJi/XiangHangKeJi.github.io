@@ -4,6 +4,23 @@ canvas {
   height: calc(2208px / var(--m));
 }
 
+body,
+#container {
+  display: flex;
+  gap: 24px;
+}
+
+#container {
+  flex-direction: column;
+}
+
+@media screen and (max-width: 720px) {
+  body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+}
 #editor form ol {
   display: flex;
   flex-direction: column;
@@ -12,6 +29,8 @@ canvas {
 
 textarea {
   height: 70px;
+  width: 80vw;
+  padding: 12px;
 }
 
 /*# sourceMappingURL=style.css.map */

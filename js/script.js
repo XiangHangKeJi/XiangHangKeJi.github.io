@@ -24,6 +24,19 @@ function Autobind(_, _2, descriptor) {
         },
     };
 }
+function Throttle(func, wait) {
+    let timeout;
+    return function () {
+        if (!timeout) {
+            const context = this;
+            const args = arguments;
+            timeout = setTimeout(() => {
+                func.call(context, ...args);
+                timeout = null;
+            }, wait);
+        }
+    };
+}
 const createEditor = function (m) {
     const editor = document.querySelector("#editor form ol");
     let i = 0;
@@ -35,14 +48,15 @@ const createEditor = function (m) {
         input.dataset.id = i + "";
         li.appendChild(input);
         editor === null || editor === void 0 ? void 0 : editor.appendChild(li);
-        input.addEventListener("input", (e) => {
+        const func = Throttle(function (e) {
             if (e && e.target && "value" in e.target && "dataset" in e.target) {
                 const { id } = e.target.dataset;
                 m.infos[id] = e.target.value;
                 m.typography();
                 m.download();
             }
-        });
+        }, 100);
+        input.addEventListener("input", func);
         i++;
     });
 };
@@ -56,7 +70,9 @@ const get = function (urls) {
                     ("success" in res && res.success === true))
                     break;
             }
-            catch (err) { }
+            catch (err) {
+                console.error(err);
+            }
         }
         return res;
     });

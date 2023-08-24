@@ -24,6 +24,28 @@ function Autobind(_, _2, descriptor) {
         },
     };
 }
+const createEditor = function (m) {
+    const editor = document.querySelector("#editor form ol");
+    let i = 0;
+    m.infos.forEach((item) => {
+        const input = document.createElement("textarea");
+        const li = document.createElement("li");
+        input.id = `input${i}`;
+        input.value = item;
+        input.dataset.id = i + "";
+        li.appendChild(input);
+        editor === null || editor === void 0 ? void 0 : editor.appendChild(li);
+        input.addEventListener("input", (e) => {
+            if (e && e.target && "value" in e.target && "dataset" in e.target) {
+                const { id } = e.target.dataset;
+                m.infos[id] = e.target.value;
+                m.typography();
+                m.download();
+            }
+        });
+        i++;
+    });
+};
 class Info {
     static init(templateUrl) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -76,6 +98,7 @@ class InfoData {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             // 将图片绘制到 canvas 上
             ctx.drawImage(image, 0, 0);
+            this.currentY = 680;
             this.fillDate();
             // 在 canvas 上绘制文字
             ctx.font = `${this.fontSize}px 微软雅黑`; // 设置字体样式和大小
@@ -94,22 +117,36 @@ class InfoData {
         link.href = this.canvas.toDataURL();
         link.download = "info.png"; // 设置下载的文件名
         link.innerText = "点击下载";
-        document.body.appendChild(link);
+        document.querySelector("#container").appendChild(link);
+    }
+    api2() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield (yield Promise.race([
+                fetch("https://api.vvhan.com/api/60s?type=json"),
+                fetch("http://bjb.yunwj.top/php/60miao/qq.php"),
+            ])).json();
+            let data;
+            if ("data" in res)
+                data = res.data;
+            if ("wb" in res)
+                data = res.wb.flat().map((item) => item.slice(2));
+            const ret = data
+                .map((item) => item.slice(0, -1) + "。")
+                .map((item) => (item.includes("【微语】") ? "" : item));
+            return ret;
+        });
     }
     getNews() {
         return __awaiter(this, void 0, void 0, function* () {
-            // API 1
+            // API 1：天行数据
             // const data = await fetch(
             //   "https://apis.tianapi.com/keji/index?key=122c151f57d1db1b42d75aa1baaab023&num=9"
             // );
             // this.infos = (await data.json()).result.newslist.map(
             //   (item: any) => item.title
             // );
-            // API 2
-            const infos = (yield (yield fetch("https://api.vvhan.com/api/60s?type=json")).json()).data
-                .map((item) => item.slice(0, -1) + "。")
-                .map((item) => (item.includes("【微语】") ? "" : item));
-            console.log(infos);
+            // API 2：每日 60 秒读懂世界
+            const infos = yield this.api2();
             const rows = [3, 2, 2, 2, 3, 3];
             let i = 0;
             const ctx = this.ctx;
@@ -175,6 +212,7 @@ __decorate([
             yield info.getNews();
             info.typography();
             info.download();
+            createEditor(info);
         }
     });
 })();

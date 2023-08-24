@@ -80,7 +80,7 @@ class InfoData {
             // 在 canvas 上绘制文字
             ctx.font = `${this.fontSize}px 微软雅黑`; // 设置字体样式和大小
             ctx.fillStyle = "black"; // 设置文字颜色
-            const margin = 100;
+            const margin = 110;
             for (let i = 0; i < this.infos.length; i++)
                 this.wrapText(`${i + 1}. ${this.infos[i]}`, this.lineWidth, this.currentY + margin);
             // 将绘制后的图片添加到页面上

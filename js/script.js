@@ -93,8 +93,8 @@ class InfoData {
         const link = document.createElement("a");
         link.href = this.canvas.toDataURL();
         link.download = "info.png"; // 设置下载的文件名
-        // 模拟点击下载链接
-        link.click();
+        link.innerText = "点击下载";
+        document.body.appendChild(link);
     }
     getNews() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -174,6 +174,7 @@ __decorate([
             download === null || download === void 0 ? void 0 : download.addEventListener("click", info.download);
             yield info.getNews();
             info.typography();
+            info.download();
         }
     });
 })();

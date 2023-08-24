@@ -166,12 +166,12 @@ __decorate([
         const info = yield Info.init("./image/info.jpg");
         if (info instanceof InfoData) {
             // const create = document.querySelector("#create");
-            // const download = document.querySelector("#download");
+            const download = document.querySelector("#download");
             // create?.addEventListener("click", async function () {
             //   await info.getNews();
             //   info.typography();
             // });
-            // download?.addEventListener("click", info.download);
+            download === null || download === void 0 ? void 0 : download.addEventListener("click", info.download);
             yield info.getNews();
             info.typography();
         }

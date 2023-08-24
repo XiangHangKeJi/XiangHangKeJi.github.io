@@ -50,10 +50,13 @@ const get = function (urls) {
     return __awaiter(this, void 0, void 0, function* () {
         let res;
         for (const url of urls) {
-            res = yield (yield fetch(url)).json();
-            if (("zt" in res && res.zt === 0) ||
-                ("success" in res && res.success === true))
-                break;
+            try {
+                res = yield (yield fetch(url)).json();
+                if (("zt" in res && res.zt === 0) ||
+                    ("success" in res && res.success === true))
+                    break;
+            }
+            catch (err) { }
         }
         return res;
     });
@@ -134,8 +137,9 @@ class InfoData {
     api2() {
         return __awaiter(this, void 0, void 0, function* () {
             const res = yield get([
-                "http://bjb.yunwj.top/php/60miao/qq.php",
                 "https://api.vvhan.com/api/60s?type=json",
+                "http://bjb.yunwj.top/php/60miao/qq.php",
+                "https://60s.viki.moe/",
             ]);
             let data;
             console.log(res);

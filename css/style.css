@@ -1,0 +1,7 @@
+canvas {
+  --m: 4;
+  width: calc(1242px / var(--m));
+  height: calc(2208px / var(--m));
+}
+
+/*# sourceMappingURL=style.css.map */

@@ -166,7 +166,7 @@ class InfoData {
             let ret;
             if (data) {
                 ret = data
-                    .map((item) => item.slice(0, -1) + "。")
+                    .map((item) => item.slice(0, -1))
                     .map((item) => (item.includes("【微语】") ? "" : item));
             }
             return ret;
